@@ -1,18 +1,26 @@
-<div [formGroup]="todoForm" class="flex justify-center items-center mb-[20px]">
-  <input type="text" class="border w-[300px] p-[5px] mr-[20px] rounded-sm" formControlName="todo">
-  <button class="bg-primary text-[20px] text-white rounded-md py-[4px] px-[15px]">Submit</button>
+<form [formGroup]="todoForm" (submit)="createTodo()" class="flex items-center mb-[10px]">
+  <input type="text" placeholder="What do you want to do ?"
+    class="border-dashed border-b-2 border-primary min-w-[180px] outline-0 w-full max-w-[400px] p-[5px] mr-[20px]"
+    formControlName="title">
+  <button class="bg-primary text-[18px] text-white rounded-md py-[4px] px-[15px]" type="submit">Submit</button>
+</form>
+
+<div class="text-red-600 text-[16px] mb-[10px]"
+  *ngIf="f['title'] && f['title'].errors && (f['title'].dirty || f['title'].touched)">
+  <div *ngIf="f['title'].errors['required']"><small>Todo field is required</small></div>
 </div>
 
 
-<ng-container *ngIf="todos$ | async; let todos">
+<ng-container *ngIf="todos">
   <ng-container [ngTemplateOutlet]="todos.length > 0 ? listTodo : null" [ngTemplateOutletContext]="{ todos: todos }">
   </ng-container>
 </ng-container>
 
 <ng-template #listTodo let-todos="todos">
-  <div class="todo-list">
+  <div class="todo-list md:w-2/3">
     <ul>
-      <app-todo-item *ngFor="let todo of todos" [todo]="todo"></app-todo-item>
+      <app-todo-item *ngFor="let todo of todos" [todo]="todo" (onCheckTodo)="completeTodo($event)"
+        (onDeleteTodo)="deleteTodo($event)" (onEditTodo)="editTodo($event)"></app-todo-item>
     </ul>
   </div>
 </ng-template>

@@ -1,8 +1,39 @@
-<div class="todo flex border m-[5px] px-[10px] rounded-md justify-between" *ngIf="todo">
-  <input type="checkbox" [id]="todo.id">
-  <label class="p-[10px] grow" [htmlFor]="todo.id"> {{todo.title}}</label>
-  <div class="flex w-[100px] justify-between">
-    <button class="text-blue-600">Edit</button>
-    <button class="text-red-600">Delete</button>
+<ng-container *ngIf="todo">
+  <ng-container [ngTemplateOutlet]="isEdit ? editMode : viewMode" [ngTemplateOutletContext]="{ todo: todo }">
+  </ng-container>
+</ng-container>
+
+<ng-template #viewMode let-todo="todo">
+  <div class="todo flex  m-[5px] px-[10px] rounded-md justify-between">
+    <input type="checkbox" [id]="todo.id" (change)="handleCompleteCheck()" [checked]="todo.completed">
+    <label [ngClass]="{
+      'p-[10px] grow': true,
+      'line-through': todo.completed,
+    }" class=" grow" [htmlFor]="todo.id"> {{todo.title}}</label>
+    <div class="flex w-[50px] items-center justify-between basis-[50px] shrink-0">
+      <button class="text-blue-600 hover:bg-gray p-[10px] rounded-md mr-[2px]" (click)="toggleEditMode()"><i nz-icon
+          nzType="edit" nzTheme="outline"></i></button>
+      <button class="text-red-600 hover:bg-gray p-[10px] rounded-md" (click)="handleDeleteTodo()"><i nz-icon
+          nzType="delete" nzTheme="outline"></i></button>
+    </div>
   </div>
-</div>
+</ng-template>
+
+
+<ng-template #editMode let-todo="todo">
+  <form [formGroup]="editForm" (submit)="handleEditTodo()"
+    class="todo flex  m-[5px] px-[10px] rounded-md justify-between">
+    <input type="checkbox" disabled [id]="todo.id" (change)="handleCompleteCheck()" [checked]="todo.completed">
+    <input type="text" class="p-[5px] mx-[10px] grow" formControlName="title">
+    <div class="flex w-[50px] items-center justify-between basis-[50px] shrink-0">
+      <button class="text-blue-600 hover:bg-gray p-[10px] rounded-md mr-[2px]" type="submit"><i nz-icon nzType="check"
+          nzTheme="outline"></i></button>
+      <button class="text-red-600 hover:bg-gray p-[10px] rounded-md" (click)="toggleEditMode()"><i nz-icon
+          nzType="close" nzTheme="outline"></i></button>
+    </div>
+  </form>
+
+  <div class="todo flex  m-[5px] px-[10px] rounded-md justify-between">
+
+  </div>
+</ng-template>
