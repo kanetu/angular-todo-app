@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Todo } from 'src/app/shared/models/todo.module';
 
 @Component({
@@ -8,7 +9,43 @@ import { Todo } from 'src/app/shared/models/todo.module';
 })
 export class TodoItemComponent implements OnInit {
   @Input() todo: Todo | undefined;
-  constructor() {}
+  @Output() onCheckTodo = new EventEmitter();
+  @Output() onEditTodo = new EventEmitter();
+  @Output() onDeleteTodo = new EventEmitter();
 
-  ngOnInit(): void {}
+  isEdit = false;
+
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.editForm.patchValue({ title: this.todo?.title });
+  }
+
+  editForm = this.formBuilder.group({
+    title: ['', [Validators.required, Validators.maxLength(250)]],
+  });
+
+  handleCompleteCheck(): void {
+    this.onCheckTodo.emit({
+      ...this.todo,
+      completed: !this.todo?.completed,
+    });
+  }
+
+  handleEditTodo(): void {
+    debugger;
+
+    if (this.editForm.value.title) {
+      this.onEditTodo.emit({ ...this.todo, title: this.editForm.value.title });
+    }
+    // this.toggleEditMode();
+  }
+
+  handleDeleteTodo(): void {
+    this.onDeleteTodo.emit(this.todo);
+  }
+
+  toggleEditMode(): void {
+    this.isEdit = !this.isEdit;
+  }
 }
