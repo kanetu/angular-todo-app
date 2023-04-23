@@ -1,0 +1,8 @@
+<div class="todo flex border m-[5px] px-[10px] rounded-md justify-between" *ngIf="todo">
+  <input type="checkbox" [id]="todo.id">
+  <label class="p-[10px] grow" [htmlFor]="todo.id"> {{todo.title}}</label>
+  <div class="flex w-[100px] justify-between">
+    <button class="text-blue-600">Edit</button>
+    <button class="text-red-600">Delete</button>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject, takeUntil, tap } from 'rxjs';
@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.sass'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject();
   error$ = new Subject();
   loading = true;
