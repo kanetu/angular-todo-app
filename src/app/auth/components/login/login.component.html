@@ -1,0 +1,18 @@
+<div class="login_wrapper w-full flex flex-col items-center">
+  <div class="login border rounded-md p-[20px] max-w-[600px] flex justify-center" [formGroup]="loginForm">
+    <h3>Email:</h3>
+    <input class="login__field login__field--email px-[10px] mx-[20px] border rounded-sm" type="text"
+      aria-label="Filter projects" placeholder="Email" formControlName="email" />
+    <div class="login__actions ">
+      <button class="bg-primary rounded-md px-[10px] text-white" (click)="handleLogin()">Go!</button>
+    </div>
+  </div>
+  <ng-container *ngIf="error$ | async; then error"></ng-container>
+
+</div>
+
+<ng-template #error>
+  <span class="text-red-600 text-[16px] mt-[20px]">
+    Your email is not existed in the system, please try again!
+  </span>
+</ng-template>
