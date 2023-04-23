@@ -1,12 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
+import { canActivate, canActivateChild } from './auth/guards/auth.guard';
+import { USER_INFO } from './constants';
+
+const userInfo = JSON.parse(localStorage.getItem(USER_INFO) || '[]');
 
 const routes: Routes = [
   {
     path: 'home',
     loadChildren: () =>
       import('./pages/home/home.module').then((m) => m.HomeModule),
+    canActivate: [canActivate],
+    canActivateChild: [canActivateChild],
+    data: {
+      userInfo: userInfo,
+    },
   },
   {
     path: 'about',
@@ -15,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: HomeComponent,
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
   {
     path: '**',
