@@ -2,12 +2,14 @@
   <input type="text" placeholder="What do you want to do ?"
     class="border-dashed border-b-2 border-primary min-w-[180px] outline-0 w-full max-w-[400px] p-[5px] mr-[20px]"
     formControlName="title">
-  <button class="bg-primary text-[18px] text-white rounded-md py-[4px] px-[15px]" type="submit">Submit</button>
+  <button class="bg-primary font-light text-[16px] text-white rounded-md py-[4px] px-[15px]"
+    type="submit">Submit</button>
 </form>
 
 <div class="text-red-600 text-[16px] mb-[10px]"
   *ngIf="f['title'] && f['title'].errors && (f['title'].dirty || f['title'].touched)">
   <div *ngIf="f['title'].errors['required']"><small>Todo field is required</small></div>
+  <div *ngIf="f['title'].errors['maxlength']"><small>Only 250 characters allowed</small></div>
 </div>
 
 
