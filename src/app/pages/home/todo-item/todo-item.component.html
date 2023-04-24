@@ -1,0 +1,43 @@
+<ng-container *ngIf="todo">
+  <ng-container [ngTemplateOutlet]="isEdit ? editMode : viewMode" [ngTemplateOutletContext]="{ todo: todo }">
+  </ng-container>
+</ng-container>
+
+<ng-template #viewMode let-todo="todo">
+  <div class="todo flex  m-[5px] px-[10px] rounded-md justify-between">
+    <label nz-checkbox [nzChecked]="todo.completed" (nzCheckedChange)="handleCompleteCheck()">
+      <label [ngClass]="{
+        'p-[10px] grow': true,
+        'line-through': todo.completed,
+      }"> {{todo.title}}</label>
+    </label>
+
+    <div class="flex w-[50px] items-center justify-between basis-[50px] shrink-0">
+      <button class="text-blue-600 hover:bg-gray p-[10px] rounded-md mr-[2px] flex items-center"
+        (click)="toggleEditMode()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+      <button class="text-red-600 hover:bg-gray p-[10px] rounded-md flex items-center" (click)="handleDeleteTodo()"><i
+          nz-icon nzType="delete" nzTheme="outline"></i></button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #editMode let-todo="todo">
+  <form [formGroup]="editForm" (submit)="handleEditTodo()"
+    class="todo flex  m-[5px] px-[10px] rounded-md justify-between">
+    <input type="checkbox" disabled [id]="todo.id" (change)="handleCompleteCheck()" [checked]="todo.completed">
+    <input type="text" class="p-[5px] mx-[10px] grow" formControlName="title">
+    <div class="flex w-[50px] items-center justify-between basis-[50px] shrink-0">
+      <button class="text-blue-600 hover:bg-gray p-[10px] rounded-md mr-[2px]" type="submit"><i nz-icon nzType="check"
+          nzTheme="outline"></i></button>
+      <button class="text-red-600 hover:bg-gray p-[10px] rounded-md" (click)="toggleEditMode()"><i nz-icon
+          nzType="close" nzTheme="outline"></i></button>
+    </div>
+  </form>
+
+  <div class="text-red-600 text-[16px] ml-[40px] mb-[10px]"
+    *ngIf="f['title'] && f['title'].errors && (f['title'].dirty || f['title'].touched)">
+    <div *ngIf="f['title'].errors['required']"><small>This field is required</small></div>
+    <div *ngIf="f['title'].errors['maxlength']"><small>Only 250 characters allowed</small></div>
+  </div>
+</ng-template>
