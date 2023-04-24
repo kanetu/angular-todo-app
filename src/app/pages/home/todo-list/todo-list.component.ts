@@ -44,7 +44,11 @@ export class TodoListComponent implements OnInit, OnDestroy {
   }
 
   createTodo(): void {
-    if (this.userInfo.length > 0 && this.todoForm.value.title) {
+    if (
+      this.userInfo.length > 0 &&
+      this.todoForm.valid &&
+      this.todoForm.value.title
+    ) {
       const todo = {
         userId: this.userInfo.id,
         completed: false,

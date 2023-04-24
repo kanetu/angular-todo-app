@@ -42,7 +42,7 @@ export class TodoItemComponent implements OnInit {
   }
 
   handleEditTodo(): void {
-    if (this.editForm.value.title) {
+    if (this.editForm.valid && this.editForm.value.title) {
       this.onEditTodo.emit({ ...this.todo, title: this.editForm.value.title });
     }
     this.toggleEditMode();
