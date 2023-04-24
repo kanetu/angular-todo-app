@@ -5,16 +5,18 @@
 
 <ng-template #viewMode let-todo="todo">
   <div class="todo flex  m-[5px] px-[10px] rounded-md justify-between">
-    <input type="checkbox" [id]="todo.id" (change)="handleCompleteCheck()" [checked]="todo.completed">
-    <label [ngClass]="{
-      'p-[10px] grow': true,
-      'line-through': todo.completed,
-    }" class=" grow" [htmlFor]="todo.id"> {{todo.title}}</label>
+    <label nz-checkbox [nzChecked]="todo.completed" (nzCheckedChange)="handleCompleteCheck()">
+      <label [ngClass]="{
+        'p-[10px] grow': true,
+        'line-through': todo.completed,
+      }"> {{todo.title}}</label>
+    </label>
+
     <div class="flex w-[50px] items-center justify-between basis-[50px] shrink-0">
-      <button class="text-blue-600 hover:bg-gray p-[10px] rounded-md mr-[2px]" (click)="toggleEditMode()"><i nz-icon
-          nzType="edit" nzTheme="outline"></i></button>
-      <button class="text-red-600 hover:bg-gray p-[10px] rounded-md" (click)="handleDeleteTodo()"><i nz-icon
-          nzType="delete" nzTheme="outline"></i></button>
+      <button class="text-blue-600 hover:bg-gray p-[10px] rounded-md mr-[2px] flex items-center"
+        (click)="toggleEditMode()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+      <button class="text-red-600 hover:bg-gray p-[10px] rounded-md flex items-center" (click)="handleDeleteTodo()"><i
+          nz-icon nzType="delete" nzTheme="outline"></i></button>
     </div>
   </div>
 </ng-template>
@@ -33,7 +35,9 @@
     </div>
   </form>
 
-  <div class="todo flex  m-[5px] px-[10px] rounded-md justify-between">
-
+  <div class="text-red-600 text-[16px] ml-[40px] mb-[10px]"
+    *ngIf="f['title'] && f['title'].errors && (f['title'].dirty || f['title'].touched)">
+    <div *ngIf="f['title'].errors['required']"><small>This field is required</small></div>
+    <div *ngIf="f['title'].errors['maxlength']"><small>Only 250 characters allowed</small></div>
   </div>
 </ng-template>
